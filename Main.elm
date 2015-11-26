@@ -1,9 +1,9 @@
-import Helicopter exposing (update, view)
+import HelicopterRide exposing (update, view)
 import StartApp.Simple exposing (start)
 
 main = 
   start
-    { model = "Welcome to the Helicopter Ride"
+    { model = { helicopter = 20 }
     , update = update
     , view = view
     }
