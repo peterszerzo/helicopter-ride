@@ -4,9 +4,14 @@
 
 module HelicopterRide where
 
+import Debug exposing (log)
+
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (style)
+
+import String
+import Char
 
 import Effects exposing (Effects, none)
 
@@ -45,7 +50,7 @@ init helicopterPosition personPosition time =
 
 -- Update
 
-type Action = Pers Person.Action | Heli Helicopter.Action | Move { x: Float, y: Float }
+type Action = Pers Person.Action | Heli Helicopter.Action | Move { x: Float, y: Float } | Tick | Key Char
 
 update: Action -> Model -> ( Model, Effects Action)
 update action model =
@@ -62,6 +67,18 @@ update action model =
       ( { model |
           helicopter = { x = model.helicopter.x + d.x, y = model.helicopter.y + d.y }
       }, none )
+    Tick ->
+      ({ model |
+        helicopter = { x = model.helicopter.x, y = model.helicopter.y + 1 }
+      }, none)
+    Key keyCharacter ->
+      let
+        dx = 0
+        dy = 0
+      in  
+        ({ model |
+          helicopter = model.helicopter
+        }, none)
 
 
 -- View

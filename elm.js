@@ -11007,9 +11007,15 @@ Elm.HelicopterRide.make = function (_elm) {
       switch (_p0.ctor)
       {case "Heli": return {ctor: "_Tuple2",_0: _U.update(model,{helicopter: A2($Helicopter.update,_p0._0,model.helicopter)}),_1: $Effects.none};
          case "Pers": return {ctor: "_Tuple2",_0: _U.update(model,{person: A2($Person.update,_p0._0,model.person)}),_1: $Effects.none};
-         default: var _p1 = _p0._0;
-           return {ctor: "_Tuple2",_0: _U.update(model,{helicopter: {x: model.helicopter.x + _p1.x,y: model.helicopter.y + _p1.y}}),_1: $Effects.none};}
+         case "Move": var _p1 = _p0._0;
+           return {ctor: "_Tuple2",_0: _U.update(model,{helicopter: {x: model.helicopter.x + _p1.x,y: model.helicopter.y + _p1.y}}),_1: $Effects.none};
+         case "Tick": return {ctor: "_Tuple2",_0: _U.update(model,{helicopter: {x: model.helicopter.x,y: model.helicopter.y + 1}}),_1: $Effects.none};
+         default: var dy = 0;
+           var dx = 0;
+           return {ctor: "_Tuple2",_0: _U.update(model,{helicopter: model.helicopter}),_1: $Effects.none};}
    });
+   var Key = function (a) {    return {ctor: "Key",_0: a};};
+   var Tick = {ctor: "Tick"};
    var Move = function (a) {    return {ctor: "Move",_0: a};};
    var Heli = function (a) {    return {ctor: "Heli",_0: a};};
    var Pers = function (a) {    return {ctor: "Pers",_0: a};};
@@ -11043,6 +11049,8 @@ Elm.HelicopterRide.make = function (_elm) {
                                        ,Pers: Pers
                                        ,Heli: Heli
                                        ,Move: Move
+                                       ,Tick: Tick
+                                       ,Key: Key
                                        ,update: update
                                        ,containerStyle: containerStyle
                                        ,view: view};
@@ -11054,20 +11062,24 @@ Elm.Main.make = function (_elm) {
    if (_elm.Main.values) return _elm.Main.values;
    var _U = Elm.Native.Utils.make(_elm),
    $Basics = Elm.Basics.make(_elm),
+   $Char = Elm.Char.make(_elm),
    $Debug = Elm.Debug.make(_elm),
    $Effects = Elm.Effects.make(_elm),
    $HelicopterRide = Elm.HelicopterRide.make(_elm),
+   $Keyboard = Elm.Keyboard.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $StartApp = Elm.StartApp.make(_elm),
-   $Task = Elm.Task.make(_elm);
+   $Task = Elm.Task.make(_elm),
+   $Time = Elm.Time.make(_elm);
    var _op = {};
    var app = $StartApp.start({init: A3($HelicopterRide.init,{x: 10,y: 10},{x: 20,y: 10},0)
                              ,update: $HelicopterRide.update
                              ,view: $HelicopterRide.view
-                             ,inputs: _U.list([])});
+                             ,inputs: _U.list([A2($Signal.map,function (n) {    return $HelicopterRide.Tick;},$Time.fps(30))
+                                              ,A2($Signal.map,function (i) {    return $HelicopterRide.Key($Char.fromCode(i));},$Keyboard.presses)])});
    var main = app.html;
    var tasks = Elm.Native.Task.make(_elm).performSignal("tasks",app.tasks);
    return _elm.Main.values = {_op: _op,app: app,main: main};

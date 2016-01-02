@@ -8,6 +8,8 @@ import StartApp exposing (..)
 import Effects exposing (Never)
 import Task
 
+import Char
+
 
 -- Entry point.
 
@@ -16,7 +18,10 @@ app =
     { init = init { x = 10, y = 10 } { x = 20, y = 10 } 0
     , update = update
     , view = view
-    , inputs = []
+    , inputs = [ 
+        Signal.map (\n -> HelicopterRide.Tick) (fps 30)
+      , Signal.map (\i -> HelicopterRide.Key (Char.fromCode i)) Keyboard.presses
+      ]
     }
 
 
