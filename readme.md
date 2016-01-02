@@ -1,1 +1,5 @@
-I wrote Helicopter Ride way back when in High School.
+# Helicopter Ride
+
+## Getting Started
+
+Navigate to project root and type ``elm-reactor``.
