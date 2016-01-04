@@ -15,7 +15,7 @@ import Char
 
 import Effects exposing (Effects, none)
 
-import Helicopter
+import Helicopter exposing (update, view, init)
 import Person
 
 import Graphics.Collage exposing (collage, rect, filled, solid)
@@ -33,10 +33,10 @@ type alias Model =
     time: Float
   }
 
-init: Helicopter.Model -> Person.Model -> Float -> ( Model, Effects Action)
+init: { x: Float, y: Float } -> Person.Model -> Float -> ( Model, Effects Action)
 init helicopterPosition personPosition time =
   let 
-    helicopter = Helicopter.init helicopterPosition
+    helicopter = Helicopter.init helicopterPosition.x helicopterPosition.y 0 2
     person = Person.init personPosition
     time = time
   in
@@ -50,7 +50,20 @@ init helicopterPosition personPosition time =
 
 -- Update
 
-type Action = Pers Person.Action | Heli Helicopter.Action | Move { x: Float, y: Float } | Tick | Key Char
+getAcceleration: Char -> { x: Float, y: Float }
+getAcceleration char =
+  if (char == 'w') then 
+    { x = 0, y = -1 } 
+  else if (char == 's') then 
+    { x = 0, y = 1 } 
+  else if (char == 'a') then 
+    { x = 1, y = 0 } 
+  else if (char == 'd') then 
+    { x = -1, y = 0 } 
+  else 
+    { x = 0, y = 0 }
+
+type Action = Pers Person.Action | Heli Helicopter.Action | Tick | Key Char
 
 update: Action -> Model -> ( Model, Effects Action)
 update action model =
@@ -63,21 +76,17 @@ update action model =
       ( { model |
           person = Person.update act model.person
       }, none )
-    Move d ->
-      ( { model |
-          helicopter = { x = model.helicopter.x + d.x, y = model.helicopter.y + d.y }
-      }, none )
     Tick ->
       ({ model |
-        helicopter = { x = model.helicopter.x, y = model.helicopter.y + 1 }
+        helicopter = Helicopter.update Helicopter.Tick model.helicopter
       }, none)
-    Key keyCharacter ->
+    Key keyChar ->
       let
-        dx = 0
-        dy = 0
+        key = String.fromChar keyChar
+        acceleration = getAcceleration keyChar
       in  
         ({ model |
-          helicopter = model.helicopter
+          helicopter = Helicopter.update (Helicopter.Accelerate (getAcceleration keyChar)) model.helicopter
         }, none)
 
 
@@ -91,21 +100,28 @@ containerStyle =
     , ("width", "640px")
     ]
 
+headingStyle : Attribute
+headingStyle =
+  style
+    [ ("font-family", "calibri, helvetica")
+    ]
+
 view: Signal.Address Action -> Model -> Html
 view address model =
   div [ containerStyle ]
-    [ h1 [] [ text "Helicopter Ride" ]
+    [ h1 [ headingStyle ] [ text "Helicopter Ride" ]
+    , p [] [ text "Use w-a-s-d keys to navigate the helicopter." ]
     , fromElement (
         collage 640 480
         [ (filled black) (rect 640 480)
-        , Helicopter.view (Signal.forwardTo address Heli) model.helicopter 
         , Person.view (Signal.forwardTo address Pers) model.person
+        , Helicopter.view (Signal.forwardTo address Heli) model.helicopter 
         ]
       )
-    , div [] 
-    [ button [ onClick address (Move { x = 5, y = 0 }) ] [ text "Move Left" ]
-    , button [ onClick address (Move { x = -5, y = 0 }) ] [ text "Move Right" ]
-    , button [ onClick address (Move { x = 0, y = 5 }) ] [ text "Move Down" ]
-    , button [ onClick address (Move { x = 0, y = -5 }) ] [ text "Move Up" ]
-    ]
+    --, div [] 
+    --[ button [ onClick (Signal.forwardTo address Heli) (Helicopter.Move { x = 5, y = 0 }) ] [ text "Move Left" ]
+    --, button [ onClick (Signal.forwardTo address Heli) (Helicopter.Move { x = -5, y = 0 }) ] [ text "Move Right" ]
+    --, button [ onClick (Signal.forwardTo address Heli) (Helicopter.Move { x = 0, y = 5 }) ] [ text "Move Down" ]
+    --, button [ onClick (Signal.forwardTo address Heli) (Helicopter.Move { x = 0, y = -5 }) ] [ text "Move Up" ]
+    --]
     ]

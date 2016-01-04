@@ -1,0 +1,19 @@
+{
+  "name": "helicopter-ride",
+  "version": "1.0.0",
+  "description": "## Getting Started",
+  "main": "elm.js",
+  "scripts": {
+    "publish": "elm-make Main.elm && node publish.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pickled-plugins/helicopter-ride.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pickled-plugins/helicopter-ride/issues"
+  },
+  "homepage": "https://github.com/pickled-plugins/helicopter-ride#readme"
+}

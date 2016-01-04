@@ -1,4 +1,4 @@
-module Helicopter (Model, init, Action, update, view) where
+module Helicopter where
 
 import Html exposing (..)
 
@@ -7,27 +7,31 @@ import Color exposing (..)
 import Graphics.Collage exposing (..)
 import Graphics.Element exposing (..)
 
-
+dt = 0.1
 
 -- Model
 
-type alias Model = { x: Float, y: Float }
+type alias Model = { x: Float, y: Float, vx: Float, vy: Float }
 
-init : { x: Float, y: Float } -> Model
-init pos = 
-  { x = pos.x, y = pos.y }
+init : Float -> Float -> Float -> Float -> Model
+init x y vx vy = 
+  { x = x, y = y, vx = vx, vy = vy }
 
 
 
 -- Update
 
-type Action = Move { x: Float, y: Float }
+type Action = Move { x: Float, y: Float } | Tick | Accelerate { x: Float, y: Float }
 
 update: Action -> Model -> Model
 update action model = 
   case action of
     Move d ->
-      { x = model.x + d.x, y = model.y + d.y }
+      { model | x = model.x + d.x, y = model.y + d.y }
+    Accelerate d ->
+      { model | vx = model.vx + d.x, vy = model.vy + d.y }
+    Tick ->
+      { model | x = model.x + model.vx * dt, y = model.y + model.vy * dt }
 
 
 

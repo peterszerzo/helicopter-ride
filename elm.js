@@ -10902,11 +10902,22 @@ Elm.Helicopter.make = function (_elm) {
                                       {ctor: "_Tuple2",_0: -18 + model.x,_1: -2 + 55 + model.y},
                                       A2($Graphics$Collage.filled,A3($Color.rgb,0,0,0),A2($Graphics$Collage.oval,10,6)))])));
    });
-   var update = F2(function (action,model) {    var _p0 = action;var _p1 = _p0._0;return {x: model.x + _p1.x,y: model.y + _p1.y};});
+   var Accelerate = function (a) {    return {ctor: "Accelerate",_0: a};};
+   var Tick = {ctor: "Tick"};
    var Move = function (a) {    return {ctor: "Move",_0: a};};
-   var init = function (pos) {    return {x: pos.x,y: pos.y};};
-   var Model = F2(function (a,b) {    return {x: a,y: b};});
-   return _elm.Helicopter.values = {_op: _op,init: init,update: update,view: view,Model: Model};
+   var init = F4(function (x,y,vx,vy) {    return {x: x,y: y,vx: vx,vy: vy};});
+   var Model = F4(function (a,b,c,d) {    return {x: a,y: b,vx: c,vy: d};});
+   var dt = 0.1;
+   var update = F2(function (action,model) {
+      var _p0 = action;
+      switch (_p0.ctor)
+      {case "Move": var _p1 = _p0._0;
+           return _U.update(model,{x: model.x + _p1.x,y: model.y + _p1.y});
+         case "Accelerate": var _p2 = _p0._0;
+           return _U.update(model,{vx: model.vx + _p2.x,vy: model.vy + _p2.y});
+         default: return _U.update(model,{x: model.x + model.vx * dt,y: model.y + model.vy * dt});}
+   });
+   return _elm.Helicopter.values = {_op: _op,dt: dt,Model: Model,init: init,Move: Move,Tick: Tick,Accelerate: Accelerate,update: update,view: view};
 };
 Elm.Person = Elm.Person || {};
 Elm.Person.make = function (_elm) {
@@ -10927,49 +10938,125 @@ Elm.Person.make = function (_elm) {
       return A2($Graphics$Collage.rotate,
       3.14159,
       $Graphics$Collage.group(_U.list([A2($Graphics$Collage.move,
+                                      {ctor: "_Tuple2",_0: -14 + model.x,_1: 42 + model.y},
+                                      A2($Graphics$Collage.filled,A3($Color.rgb,255,255,0),A2($Graphics$Collage.oval,4,10)))
+                                      ,A2($Graphics$Collage.move,
+                                      {ctor: "_Tuple2",_0: 14 + model.x,_1: 42 + model.y},
+                                      A2($Graphics$Collage.filled,A3($Color.rgb,255,255,0),A2($Graphics$Collage.oval,4,10)))
+                                      ,A2($Graphics$Collage.move,
+                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
+                                      A2($Graphics$Collage.filled,A3($Color.rgb,255,255,0),A2($Graphics$Collage.oval,16,20)))
+                                      ,A2($Graphics$Collage.move,
+                                      {ctor: "_Tuple2",_0: -2 + model.x,_1: -3 + model.y},
+                                      A2($Graphics$Collage.filled,A3($Color.rgb,0,0,0),A2($Graphics$Collage.oval,2,2)))
+                                      ,A2($Graphics$Collage.move,
+                                      {ctor: "_Tuple2",_0: 2 + model.x,_1: -3 + model.y},
+                                      A2($Graphics$Collage.filled,A3($Color.rgb,0,0,0),A2($Graphics$Collage.oval,2,2)))
+                                      ,A2($Graphics$Collage.move,
                                       {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
                                       A2($Graphics$Collage.traced,
-                                      $Graphics$Collage.solid($Color.white),
+                                      $Graphics$Collage.solid($Color.black),
+                                      $Graphics$Collage.path(_U.list([{ctor: "_Tuple2",_0: -2,_1: 4},{ctor: "_Tuple2",_0: 2,_1: 4}]))))
+                                      ,A2($Graphics$Collage.move,
+                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
+                                      A2($Graphics$Collage.filled,
+                                      A3($Color.rgb,255,255,255),
+                                      $Graphics$Collage.polygon(_U.list([{ctor: "_Tuple2",_0: -12,_1: 15}
+                                                                        ,{ctor: "_Tuple2",_0: -16,_1: 15}
+                                                                        ,{ctor: "_Tuple2",_0: -16,_1: 42}
+                                                                        ,{ctor: "_Tuple2",_0: -12,_1: 42}]))))
+                                      ,A2($Graphics$Collage.move,
+                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
+                                      A2($Graphics$Collage.filled,
+                                      A3($Color.rgb,255,255,255),
+                                      $Graphics$Collage.polygon(_U.list([{ctor: "_Tuple2",_0: 12,_1: 15}
+                                                                        ,{ctor: "_Tuple2",_0: 16,_1: 15}
+                                                                        ,{ctor: "_Tuple2",_0: 16,_1: 42}
+                                                                        ,{ctor: "_Tuple2",_0: 12,_1: 42}]))))
+                                      ,A2($Graphics$Collage.move,
+                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
+                                      A2($Graphics$Collage.filled,
+                                      A3($Color.rgb,255,255,255),
+                                      $Graphics$Collage.polygon(_U.list([{ctor: "_Tuple2",_0: -10,_1: 14}
+                                                                        ,{ctor: "_Tuple2",_0: -10,_1: 45}
+                                                                        ,{ctor: "_Tuple2",_0: 10,_1: 45}
+                                                                        ,{ctor: "_Tuple2",_0: 10,_1: 14}]))))
+                                      ,A2($Graphics$Collage.move,
+                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
+                                      A2($Graphics$Collage.filled,
+                                      A3($Color.rgb,255,255,255),
+                                      $Graphics$Collage.polygon(_U.list([{ctor: "_Tuple2",_0: -2,_1: 7}
+                                                                        ,{ctor: "_Tuple2",_0: -2,_1: 14}
+                                                                        ,{ctor: "_Tuple2",_0: 2,_1: 14}
+                                                                        ,{ctor: "_Tuple2",_0: 2,_1: 7}]))))
+                                      ,A2($Graphics$Collage.move,
+                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
+                                      A2($Graphics$Collage.filled,
+                                      A3($Color.rgb,0,0,255),
+                                      $Graphics$Collage.polygon(_U.list([{ctor: "_Tuple2",_0: -9,_1: 47}
+                                                                        ,{ctor: "_Tuple2",_0: -9,_1: 81}
+                                                                        ,{ctor: "_Tuple2",_0: -2,_1: 81}
+                                                                        ,{ctor: "_Tuple2",_0: -2,_1: 47}]))))
+                                      ,A2($Graphics$Collage.move,
+                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
+                                      A2($Graphics$Collage.filled,
+                                      A3($Color.rgb,0,0,255),
+                                      $Graphics$Collage.polygon(_U.list([{ctor: "_Tuple2",_0: 9,_1: 47}
+                                                                        ,{ctor: "_Tuple2",_0: 9,_1: 81}
+                                                                        ,{ctor: "_Tuple2",_0: 2,_1: 81}
+                                                                        ,{ctor: "_Tuple2",_0: 2,_1: 47}]))))
+                                      ,A2($Graphics$Collage.move,
+                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
+                                      A2($Graphics$Collage.filled,
+                                      A3($Color.rgb,0,0,255),
+                                      $Graphics$Collage.polygon(_U.list([{ctor: "_Tuple2",_0: -9,_1: 47}
+                                                                        ,{ctor: "_Tuple2",_0: -9,_1: 53}
+                                                                        ,{ctor: "_Tuple2",_0: 9,_1: 53}
+                                                                        ,{ctor: "_Tuple2",_0: 9,_1: 47}]))))
+                                      ,A2($Graphics$Collage.move,
+                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
+                                      A2($Graphics$Collage.traced,
+                                      $Graphics$Collage.solid($Color.black),
                                       $Graphics$Collage.path(_U.list([{ctor: "_Tuple2",_0: -16,_1: 38},{ctor: "_Tuple2",_0: -12,_1: 38}]))))
                                       ,A2($Graphics$Collage.move,
                                       {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
                                       A2($Graphics$Collage.traced,
-                                      $Graphics$Collage.solid($Color.white),
+                                      $Graphics$Collage.solid($Color.black),
                                       $Graphics$Collage.path(_U.list([{ctor: "_Tuple2",_0: -16,_1: 35},{ctor: "_Tuple2",_0: -12,_1: 35}]))))
                                       ,A2($Graphics$Collage.move,
                                       {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
                                       A2($Graphics$Collage.traced,
-                                      $Graphics$Collage.solid($Color.white),
+                                      $Graphics$Collage.solid($Color.black),
                                       $Graphics$Collage.path(_U.list([{ctor: "_Tuple2",_0: 16,_1: 38},{ctor: "_Tuple2",_0: 12,_1: 38}]))))
                                       ,A2($Graphics$Collage.move,
                                       {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
                                       A2($Graphics$Collage.traced,
-                                      $Graphics$Collage.solid($Color.white),
+                                      $Graphics$Collage.solid($Color.black),
                                       $Graphics$Collage.path(_U.list([{ctor: "_Tuple2",_0: 16,_1: 35},{ctor: "_Tuple2",_0: 12,_1: 35}]))))
                                       ,A2($Graphics$Collage.move,
                                       {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
                                       A2($Graphics$Collage.traced,
-                                      $Graphics$Collage.solid($Color.white),
+                                      $Graphics$Collage.solid($Color.black),
                                       $Graphics$Collage.path(_U.list([{ctor: "_Tuple2",_0: -1,_1: 14},{ctor: "_Tuple2",_0: -4,_1: 17}]))))
                                       ,A2($Graphics$Collage.move,
                                       {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
                                       A2($Graphics$Collage.traced,
-                                      $Graphics$Collage.solid($Color.white),
+                                      $Graphics$Collage.solid($Color.black),
                                       $Graphics$Collage.path(_U.list([{ctor: "_Tuple2",_0: 1,_1: 14},{ctor: "_Tuple2",_0: 4,_1: 17}]))))
                                       ,A2($Graphics$Collage.move,
                                       {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
                                       A2($Graphics$Collage.traced,
-                                      $Graphics$Collage.solid($Color.white),
+                                      $Graphics$Collage.solid($Color.black),
                                       $Graphics$Collage.path(_U.list([{ctor: "_Tuple2",_0: -4,_1: 17},{ctor: "_Tuple2",_0: 0,_1: 22}]))))
                                       ,A2($Graphics$Collage.move,
                                       {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
                                       A2($Graphics$Collage.traced,
-                                      $Graphics$Collage.solid($Color.white),
+                                      $Graphics$Collage.solid($Color.black),
                                       $Graphics$Collage.path(_U.list([{ctor: "_Tuple2",_0: 4,_1: 17},{ctor: "_Tuple2",_0: 0,_1: 22}]))))
                                       ,A2($Graphics$Collage.move,
                                       {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
                                       A2($Graphics$Collage.traced,
-                                      $Graphics$Collage.solid($Color.white),
+                                      $Graphics$Collage.solid($Color.black),
                                       $Graphics$Collage.path(_U.list([{ctor: "_Tuple2",_0: 0,_1: 22},{ctor: "_Tuple2",_0: 0,_1: 45}]))))])));
    });
    var update = F2(function (action,model) {    var _p0 = action;return {x: model.x + _p0._0._0,y: model.y + _p0._0._1};});
@@ -10992,67 +11079,68 @@ Elm.HelicopterRide.make = function (_elm) {
    $Helicopter = Elm.Helicopter.make(_elm),
    $Html = Elm.Html.make(_elm),
    $Html$Attributes = Elm.Html.Attributes.make(_elm),
-   $Html$Events = Elm.Html.Events.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Person = Elm.Person.make(_elm),
    $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm);
    var _op = {};
+   var headingStyle = $Html$Attributes.style(_U.list([{ctor: "_Tuple2",_0: "font-family",_1: "calibri, helvetica"}]));
    var containerStyle = $Html$Attributes.style(_U.list([{ctor: "_Tuple2",_0: "display",_1: "block"}
                                                        ,{ctor: "_Tuple2",_0: "margin",_1: "30px auto auto auto"}
                                                        ,{ctor: "_Tuple2",_0: "width",_1: "640px"}]));
-   var update = F2(function (action,model) {
-      var _p0 = action;
-      switch (_p0.ctor)
-      {case "Heli": return {ctor: "_Tuple2",_0: _U.update(model,{helicopter: A2($Helicopter.update,_p0._0,model.helicopter)}),_1: $Effects.none};
-         case "Pers": return {ctor: "_Tuple2",_0: _U.update(model,{person: A2($Person.update,_p0._0,model.person)}),_1: $Effects.none};
-         case "Move": var _p1 = _p0._0;
-           return {ctor: "_Tuple2",_0: _U.update(model,{helicopter: {x: model.helicopter.x + _p1.x,y: model.helicopter.y + _p1.y}}),_1: $Effects.none};
-         case "Tick": return {ctor: "_Tuple2",_0: _U.update(model,{helicopter: {x: model.helicopter.x,y: model.helicopter.y + 1}}),_1: $Effects.none};
-         default: var dy = 0;
-           var dx = 0;
-           return {ctor: "_Tuple2",_0: _U.update(model,{helicopter: model.helicopter}),_1: $Effects.none};}
-   });
    var Key = function (a) {    return {ctor: "Key",_0: a};};
    var Tick = {ctor: "Tick"};
-   var Move = function (a) {    return {ctor: "Move",_0: a};};
    var Heli = function (a) {    return {ctor: "Heli",_0: a};};
    var Pers = function (a) {    return {ctor: "Pers",_0: a};};
    var view = F2(function (address,model) {
       return A2($Html.div,
       _U.list([containerStyle]),
-      _U.list([A2($Html.h1,_U.list([]),_U.list([$Html.text("Helicopter Ride")]))
+      _U.list([A2($Html.h1,_U.list([headingStyle]),_U.list([$Html.text("Helicopter Ride")]))
+              ,A2($Html.p,_U.list([]),_U.list([$Html.text("Use w-a-s-d keys to navigate the helicopter.")]))
               ,$Html.fromElement(A3($Graphics$Collage.collage,
               640,
               480,
               _U.list([A2($Graphics$Collage.filled,$Color.black,A2($Graphics$Collage.rect,640,480))
-                      ,A2($Helicopter.view,A2($Signal.forwardTo,address,Heli),model.helicopter)
-                      ,A2($Person.view,A2($Signal.forwardTo,address,Pers),model.person)])))
-              ,A2($Html.div,
-              _U.list([]),
-              _U.list([A2($Html.button,_U.list([A2($Html$Events.onClick,address,Move({x: 5,y: 0}))]),_U.list([$Html.text("Move Left")]))
-                      ,A2($Html.button,_U.list([A2($Html$Events.onClick,address,Move({x: -5,y: 0}))]),_U.list([$Html.text("Move Right")]))
-                      ,A2($Html.button,_U.list([A2($Html$Events.onClick,address,Move({x: 0,y: 5}))]),_U.list([$Html.text("Move Down")]))
-                      ,A2($Html.button,_U.list([A2($Html$Events.onClick,address,Move({x: 0,y: -5}))]),_U.list([$Html.text("Move Up")]))]))]));
+                      ,A2($Person.view,A2($Signal.forwardTo,address,Pers),model.person)
+                      ,A2($Helicopter.view,A2($Signal.forwardTo,address,Heli),model.helicopter)])))]));
+   });
+   var getAcceleration = function ($char) {
+      return _U.eq($char,_U.chr("w")) ? {x: 0,y: -1} : _U.eq($char,_U.chr("s")) ? {x: 0,y: 1} : _U.eq($char,_U.chr("a")) ? {x: 1,y: 0} : _U.eq($char,
+      _U.chr("d")) ? {x: -1,y: 0} : {x: 0,y: 0};
+   };
+   var update = F2(function (action,model) {
+      var _p0 = action;
+      switch (_p0.ctor)
+      {case "Heli": return {ctor: "_Tuple2",_0: _U.update(model,{helicopter: A2($Helicopter.update,_p0._0,model.helicopter)}),_1: $Effects.none};
+         case "Pers": return {ctor: "_Tuple2",_0: _U.update(model,{person: A2($Person.update,_p0._0,model.person)}),_1: $Effects.none};
+         case "Tick": return {ctor: "_Tuple2",_0: _U.update(model,{helicopter: A2($Helicopter.update,$Helicopter.Tick,model.helicopter)}),_1: $Effects.none};
+         default: var _p1 = _p0._0;
+           var acceleration = getAcceleration(_p1);
+           var key = $String.fromChar(_p1);
+           return {ctor: "_Tuple2"
+                  ,_0: _U.update(model,{helicopter: A2($Helicopter.update,$Helicopter.Accelerate(getAcceleration(_p1)),model.helicopter)})
+                  ,_1: $Effects.none};}
    });
    var init = F3(function (helicopterPosition,personPosition,time) {
       var time = time;
       var person = $Person.init(personPosition);
-      var helicopter = $Helicopter.init(helicopterPosition);
+      var helicopter = A4($Helicopter.init,helicopterPosition.x,helicopterPosition.y,0,2);
       return {ctor: "_Tuple2",_0: {helicopter: helicopter,person: person,time: time},_1: $Effects.none};
    });
    var Model = F3(function (a,b,c) {    return {helicopter: a,person: b,time: c};});
    return _elm.HelicopterRide.values = {_op: _op
                                        ,Model: Model
                                        ,init: init
+                                       ,getAcceleration: getAcceleration
                                        ,Pers: Pers
                                        ,Heli: Heli
-                                       ,Move: Move
                                        ,Tick: Tick
                                        ,Key: Key
                                        ,update: update
                                        ,containerStyle: containerStyle
+                                       ,headingStyle: headingStyle
                                        ,view: view};
 };
 Elm.Main = Elm.Main || {};
@@ -11078,7 +11166,7 @@ Elm.Main.make = function (_elm) {
    var app = $StartApp.start({init: A3($HelicopterRide.init,{x: 10,y: 10},{x: 20,y: 10},0)
                              ,update: $HelicopterRide.update
                              ,view: $HelicopterRide.view
-                             ,inputs: _U.list([A2($Signal.map,function (n) {    return $HelicopterRide.Tick;},$Time.fps(30))
+                             ,inputs: _U.list([A2($Signal.map,function (n) {    return $HelicopterRide.Tick;},$Time.fps(60))
                                               ,A2($Signal.map,function (i) {    return $HelicopterRide.Key($Char.fromCode(i));},$Keyboard.presses)])});
    var main = app.html;
    var tasks = Elm.Native.Task.make(_elm).performSignal("tasks",app.tasks);

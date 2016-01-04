@@ -19,7 +19,7 @@ app =
     , update = update
     , view = view
     , inputs = [ 
-        Signal.map (\n -> HelicopterRide.Tick) (fps 30)
+        Signal.map (\n -> HelicopterRide.Tick) (fps 60)
       , Signal.map (\i -> HelicopterRide.Key (Char.fromCode i)) Keyboard.presses
       ]
     }
