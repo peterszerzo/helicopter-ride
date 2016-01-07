@@ -10854,53 +10854,42 @@ Elm.Helicopter.make = function (_elm) {
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
    var view = F2(function (address,model) {
+      var baseTransform = $Graphics$Collage.move({ctor: "_Tuple2",_0: model.x,_1: 55 + model.y});
       return A2($Graphics$Collage.rotate,
       3.14159,
-      $Graphics$Collage.group(_U.list([A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 55 + model.y},
-                                      A2($Graphics$Collage.traced,
+      $Graphics$Collage.group(_U.list([baseTransform(A2($Graphics$Collage.traced,
                                       $Graphics$Collage.solid($Color.white),
                                       $Graphics$Collage.path(_U.list([{ctor: "_Tuple2",_0: -20,_1: -20},{ctor: "_Tuple2",_0: 20,_1: -20}]))))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 55 + model.y},
-                                      A2($Graphics$Collage.traced,
+                                      ,baseTransform(A2($Graphics$Collage.traced,
                                       $Graphics$Collage.solid($Color.white),
                                       $Graphics$Collage.path(_U.list([{ctor: "_Tuple2",_0: 0,_1: -13},{ctor: "_Tuple2",_0: 0,_1: -20}]))))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 55 + model.y},
-                                      A2($Graphics$Collage.traced,
+                                      ,baseTransform(A2($Graphics$Collage.traced,
                                       $Graphics$Collage.solid($Color.white),
                                       $Graphics$Collage.path(_U.list([{ctor: "_Tuple2",_0: 45,_1: -14},{ctor: "_Tuple2",_0: 35,_1: -14}]))))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 55 + model.y},
-                                      A2($Graphics$Collage.filled,
+                                      ,baseTransform(A2($Graphics$Collage.filled,
                                       A3($Color.rgb,0,172,167),
                                       $Graphics$Collage.polygon(_U.list([{ctor: "_Tuple2",_0: 18,_1: 5}
                                                                         ,{ctor: "_Tuple2",_0: -18,_1: 5}
                                                                         ,{ctor: "_Tuple2",_0: -18,_1: -13}
                                                                         ,{ctor: "_Tuple2",_0: 18,_1: -13}]))))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 55 + model.y},
-                                      A2($Graphics$Collage.filled,
+                                      ,baseTransform(A2($Graphics$Collage.filled,
                                       A3($Color.rgb,255,0,0),
                                       $Graphics$Collage.polygon(_U.list([{ctor: "_Tuple2",_0: 40,_1: -5}
                                                                         ,{ctor: "_Tuple2",_0: 16,_1: -5}
                                                                         ,{ctor: "_Tuple2",_0: 16,_1: -3}
                                                                         ,{ctor: "_Tuple2",_0: 40,_1: -3}]))))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 55 + model.y},
-                                      A2($Graphics$Collage.filled,
+                                      ,baseTransform(A2($Graphics$Collage.filled,
                                       A3($Color.rgb,255,0,0),
                                       $Graphics$Collage.polygon(_U.list([{ctor: "_Tuple2",_0: 40,_1: -5}
                                                                         ,{ctor: "_Tuple2",_0: 38,_1: -5}
                                                                         ,{ctor: "_Tuple2",_0: 38,_1: -14}
                                                                         ,{ctor: "_Tuple2",_0: 40,_1: -14}]))))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: -18 + model.x,_1: -2 + 55 + model.y},
-                                      A2($Graphics$Collage.filled,A3($Color.rgb,0,195,0),A2($Graphics$Collage.oval,24,22)))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: -18 + model.x,_1: -2 + 55 + model.y},
-                                      A2($Graphics$Collage.filled,A3($Color.rgb,0,0,0),A2($Graphics$Collage.oval,10,6)))])));
+                                      ,baseTransform(A2($Graphics$Collage.move,
+                                      {ctor: "_Tuple2",_0: -18,_1: -2},
+                                      A2($Graphics$Collage.filled,A3($Color.rgb,0,195,0),A2($Graphics$Collage.oval,24,22))))
+                                      ,baseTransform(A2($Graphics$Collage.move,
+                                      {ctor: "_Tuple2",_0: -18,_1: -2},
+                                      A2($Graphics$Collage.filled,A3($Color.rgb,0,0,0),A2($Graphics$Collage.oval,10,6))))])));
    });
    var Accelerate = function (a) {    return {ctor: "Accelerate",_0: a};};
    var Tick = {ctor: "Tick"};
@@ -10935,127 +10924,92 @@ Elm.Person.make = function (_elm) {
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
    var view = F2(function (address,model) {
+      var baseTransform = $Graphics$Collage.move({ctor: "_Tuple2",_0: model.x,_1: model.y});
       return A2($Graphics$Collage.rotate,
       3.14159,
       $Graphics$Collage.group(_U.list([A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: -14 + model.x,_1: 42 + model.y},
-                                      A2($Graphics$Collage.filled,A3($Color.rgb,255,255,0),A2($Graphics$Collage.oval,4,10)))
+                                      {ctor: "_Tuple2",_0: -14,_1: 42},
+                                      baseTransform(A2($Graphics$Collage.filled,A3($Color.rgb,255,255,0),A2($Graphics$Collage.oval,4,10))))
                                       ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 14 + model.x,_1: 42 + model.y},
-                                      A2($Graphics$Collage.filled,A3($Color.rgb,255,255,0),A2($Graphics$Collage.oval,4,10)))
+                                      {ctor: "_Tuple2",_0: 14,_1: 42},
+                                      baseTransform(A2($Graphics$Collage.filled,A3($Color.rgb,255,255,0),A2($Graphics$Collage.oval,4,10))))
+                                      ,baseTransform(A2($Graphics$Collage.filled,A3($Color.rgb,255,255,0),A2($Graphics$Collage.oval,16,20)))
                                       ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
-                                      A2($Graphics$Collage.filled,A3($Color.rgb,255,255,0),A2($Graphics$Collage.oval,16,20)))
+                                      {ctor: "_Tuple2",_0: -2,_1: -3},
+                                      baseTransform(A2($Graphics$Collage.filled,A3($Color.rgb,0,0,0),A2($Graphics$Collage.oval,2,2))))
                                       ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: -2 + model.x,_1: -3 + model.y},
-                                      A2($Graphics$Collage.filled,A3($Color.rgb,0,0,0),A2($Graphics$Collage.oval,2,2)))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 2 + model.x,_1: -3 + model.y},
-                                      A2($Graphics$Collage.filled,A3($Color.rgb,0,0,0),A2($Graphics$Collage.oval,2,2)))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
-                                      A2($Graphics$Collage.traced,
+                                      {ctor: "_Tuple2",_0: 2,_1: -3},
+                                      baseTransform(A2($Graphics$Collage.filled,A3($Color.rgb,0,0,0),A2($Graphics$Collage.oval,2,2))))
+                                      ,baseTransform(A2($Graphics$Collage.traced,
                                       $Graphics$Collage.solid($Color.black),
                                       $Graphics$Collage.path(_U.list([{ctor: "_Tuple2",_0: -2,_1: 4},{ctor: "_Tuple2",_0: 2,_1: 4}]))))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
-                                      A2($Graphics$Collage.filled,
+                                      ,baseTransform(A2($Graphics$Collage.filled,
                                       A3($Color.rgb,255,255,255),
                                       $Graphics$Collage.polygon(_U.list([{ctor: "_Tuple2",_0: -12,_1: 15}
                                                                         ,{ctor: "_Tuple2",_0: -16,_1: 15}
                                                                         ,{ctor: "_Tuple2",_0: -16,_1: 42}
                                                                         ,{ctor: "_Tuple2",_0: -12,_1: 42}]))))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
-                                      A2($Graphics$Collage.filled,
+                                      ,baseTransform(A2($Graphics$Collage.filled,
                                       A3($Color.rgb,255,255,255),
                                       $Graphics$Collage.polygon(_U.list([{ctor: "_Tuple2",_0: 12,_1: 15}
                                                                         ,{ctor: "_Tuple2",_0: 16,_1: 15}
                                                                         ,{ctor: "_Tuple2",_0: 16,_1: 42}
                                                                         ,{ctor: "_Tuple2",_0: 12,_1: 42}]))))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
-                                      A2($Graphics$Collage.filled,
+                                      ,baseTransform(A2($Graphics$Collage.filled,
                                       A3($Color.rgb,255,255,255),
                                       $Graphics$Collage.polygon(_U.list([{ctor: "_Tuple2",_0: -10,_1: 14}
                                                                         ,{ctor: "_Tuple2",_0: -10,_1: 45}
                                                                         ,{ctor: "_Tuple2",_0: 10,_1: 45}
                                                                         ,{ctor: "_Tuple2",_0: 10,_1: 14}]))))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
-                                      A2($Graphics$Collage.filled,
+                                      ,baseTransform(A2($Graphics$Collage.filled,
                                       A3($Color.rgb,255,255,255),
                                       $Graphics$Collage.polygon(_U.list([{ctor: "_Tuple2",_0: -2,_1: 7}
                                                                         ,{ctor: "_Tuple2",_0: -2,_1: 14}
                                                                         ,{ctor: "_Tuple2",_0: 2,_1: 14}
                                                                         ,{ctor: "_Tuple2",_0: 2,_1: 7}]))))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
-                                      A2($Graphics$Collage.filled,
+                                      ,baseTransform(A2($Graphics$Collage.filled,
                                       A3($Color.rgb,0,0,255),
                                       $Graphics$Collage.polygon(_U.list([{ctor: "_Tuple2",_0: -9,_1: 47}
                                                                         ,{ctor: "_Tuple2",_0: -9,_1: 81}
                                                                         ,{ctor: "_Tuple2",_0: -2,_1: 81}
                                                                         ,{ctor: "_Tuple2",_0: -2,_1: 47}]))))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
-                                      A2($Graphics$Collage.filled,
+                                      ,baseTransform(A2($Graphics$Collage.filled,
                                       A3($Color.rgb,0,0,255),
                                       $Graphics$Collage.polygon(_U.list([{ctor: "_Tuple2",_0: 9,_1: 47}
                                                                         ,{ctor: "_Tuple2",_0: 9,_1: 81}
                                                                         ,{ctor: "_Tuple2",_0: 2,_1: 81}
                                                                         ,{ctor: "_Tuple2",_0: 2,_1: 47}]))))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
-                                      A2($Graphics$Collage.filled,
+                                      ,baseTransform(A2($Graphics$Collage.filled,
                                       A3($Color.rgb,0,0,255),
                                       $Graphics$Collage.polygon(_U.list([{ctor: "_Tuple2",_0: -9,_1: 47}
                                                                         ,{ctor: "_Tuple2",_0: -9,_1: 53}
                                                                         ,{ctor: "_Tuple2",_0: 9,_1: 53}
                                                                         ,{ctor: "_Tuple2",_0: 9,_1: 47}]))))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
-                                      A2($Graphics$Collage.traced,
+                                      ,baseTransform(A2($Graphics$Collage.traced,
                                       $Graphics$Collage.solid($Color.black),
                                       $Graphics$Collage.path(_U.list([{ctor: "_Tuple2",_0: -16,_1: 38},{ctor: "_Tuple2",_0: -12,_1: 38}]))))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
-                                      A2($Graphics$Collage.traced,
+                                      ,baseTransform(A2($Graphics$Collage.traced,
                                       $Graphics$Collage.solid($Color.black),
                                       $Graphics$Collage.path(_U.list([{ctor: "_Tuple2",_0: -16,_1: 35},{ctor: "_Tuple2",_0: -12,_1: 35}]))))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
-                                      A2($Graphics$Collage.traced,
+                                      ,baseTransform(A2($Graphics$Collage.traced,
                                       $Graphics$Collage.solid($Color.black),
                                       $Graphics$Collage.path(_U.list([{ctor: "_Tuple2",_0: 16,_1: 38},{ctor: "_Tuple2",_0: 12,_1: 38}]))))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
-                                      A2($Graphics$Collage.traced,
+                                      ,baseTransform(A2($Graphics$Collage.traced,
                                       $Graphics$Collage.solid($Color.black),
                                       $Graphics$Collage.path(_U.list([{ctor: "_Tuple2",_0: 16,_1: 35},{ctor: "_Tuple2",_0: 12,_1: 35}]))))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
-                                      A2($Graphics$Collage.traced,
+                                      ,baseTransform(A2($Graphics$Collage.traced,
                                       $Graphics$Collage.solid($Color.black),
                                       $Graphics$Collage.path(_U.list([{ctor: "_Tuple2",_0: -1,_1: 14},{ctor: "_Tuple2",_0: -4,_1: 17}]))))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
-                                      A2($Graphics$Collage.traced,
+                                      ,baseTransform(A2($Graphics$Collage.traced,
                                       $Graphics$Collage.solid($Color.black),
                                       $Graphics$Collage.path(_U.list([{ctor: "_Tuple2",_0: 1,_1: 14},{ctor: "_Tuple2",_0: 4,_1: 17}]))))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
-                                      A2($Graphics$Collage.traced,
+                                      ,baseTransform(A2($Graphics$Collage.traced,
                                       $Graphics$Collage.solid($Color.black),
                                       $Graphics$Collage.path(_U.list([{ctor: "_Tuple2",_0: -4,_1: 17},{ctor: "_Tuple2",_0: 0,_1: 22}]))))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
-                                      A2($Graphics$Collage.traced,
+                                      ,baseTransform(A2($Graphics$Collage.traced,
                                       $Graphics$Collage.solid($Color.black),
                                       $Graphics$Collage.path(_U.list([{ctor: "_Tuple2",_0: 4,_1: 17},{ctor: "_Tuple2",_0: 0,_1: 22}]))))
-                                      ,A2($Graphics$Collage.move,
-                                      {ctor: "_Tuple2",_0: 0 + model.x,_1: 0 + model.y},
-                                      A2($Graphics$Collage.traced,
+                                      ,baseTransform(A2($Graphics$Collage.traced,
                                       $Graphics$Collage.solid($Color.black),
                                       $Graphics$Collage.path(_U.list([{ctor: "_Tuple2",_0: 0,_1: 22},{ctor: "_Tuple2",_0: 0,_1: 45}]))))])));
    });
@@ -11083,8 +11037,7 @@ Elm.HelicopterRide.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Person = Elm.Person.make(_elm),
    $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm),
-   $String = Elm.String.make(_elm);
+   $Signal = Elm.Signal.make(_elm);
    var _op = {};
    var headingStyle = $Html$Attributes.style(_U.list([{ctor: "_Tuple2",_0: "font-family",_1: "calibri, helvetica"}]));
    var containerStyle = $Html$Attributes.style(_U.list([{ctor: "_Tuple2",_0: "display",_1: "block"}
@@ -11116,11 +11069,9 @@ Elm.HelicopterRide.make = function (_elm) {
       {case "Heli": return {ctor: "_Tuple2",_0: _U.update(model,{helicopter: A2($Helicopter.update,_p0._0,model.helicopter)}),_1: $Effects.none};
          case "Pers": return {ctor: "_Tuple2",_0: _U.update(model,{person: A2($Person.update,_p0._0,model.person)}),_1: $Effects.none};
          case "Tick": return {ctor: "_Tuple2",_0: _U.update(model,{helicopter: A2($Helicopter.update,$Helicopter.Tick,model.helicopter)}),_1: $Effects.none};
-         default: var _p1 = _p0._0;
-           var acceleration = getAcceleration(_p1);
-           var key = $String.fromChar(_p1);
+         default: var acceleration = getAcceleration(_p0._0);
            return {ctor: "_Tuple2"
-                  ,_0: _U.update(model,{helicopter: A2($Helicopter.update,$Helicopter.Accelerate(getAcceleration(_p1)),model.helicopter)})
+                  ,_0: _U.update(model,{helicopter: A2($Helicopter.update,$Helicopter.Accelerate(acceleration),model.helicopter)})
                   ,_1: $Effects.none};}
    });
    var init = F3(function (helicopterPosition,personPosition,time) {

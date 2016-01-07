@@ -82,11 +82,10 @@ update action model =
       }, none)
     Key keyChar ->
       let
-        key = String.fromChar keyChar
         acceleration = getAcceleration keyChar
       in  
         ({ model |
-          helicopter = Helicopter.update (Helicopter.Accelerate (getAcceleration keyChar)) model.helicopter
+          helicopter = Helicopter.update (Helicopter.Accelerate (acceleration)) model.helicopter
         }, none)
 
 
@@ -118,10 +117,4 @@ view address model =
         , Helicopter.view (Signal.forwardTo address Heli) model.helicopter 
         ]
       )
-    --, div [] 
-    --[ button [ onClick (Signal.forwardTo address Heli) (Helicopter.Move { x = 5, y = 0 }) ] [ text "Move Left" ]
-    --, button [ onClick (Signal.forwardTo address Heli) (Helicopter.Move { x = -5, y = 0 }) ] [ text "Move Right" ]
-    --, button [ onClick (Signal.forwardTo address Heli) (Helicopter.Move { x = 0, y = 5 }) ] [ text "Move Down" ]
-    --, button [ onClick (Signal.forwardTo address Heli) (Helicopter.Move { x = 0, y = -5 }) ] [ text "Move Up" ]
-    --]
     ]

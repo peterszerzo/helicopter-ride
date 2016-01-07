@@ -33,33 +33,79 @@ update action model =
 
 view: Signal.Address Action -> Model -> Form
 view address model =
-  rotate 3.14159 (group
-    [ move (-14 + model.x, 42 + model.y) (filled (rgb 255 255 0) (oval 4 10))
-    , move (14 + model.x, 42 + model.y) (filled (rgb 255 255 0) (oval 4 10))
-
-    , move (0 + model.x, 0 + model.y) (filled (rgb 255 255 0) (oval 16 20))
-    , move (-2 + model.x, -3 + model.y) (filled (rgb 0 0 0) (oval 2 2))
-    , move (2 + model.x, -3 + model.y) (filled (rgb 0 0 0) (oval 2 2))
-
-    , move (0 + model.x,  0 + model.y) (traced (solid black) (path [ (-2, 4),(2, 4) ] ))
-
-    , move (0 + model.x,  0 + model.y) (filled (rgb 255 255 255) (polygon [ (-12,15), (-16,15), (-16,42), (-12,42) ]))
-    , move (0 + model.x,  0 + model.y) (filled (rgb 255 255 255) (polygon [ (12,15), (16,15), (16,42), (12,42) ]))
-    , move (0 + model.x,  0 + model.y) (filled (rgb 255 255 255) (polygon [ (-10, 14), (-10, 45), (10, 45), (10, 14) ]))
-    , move (0 + model.x,  0 + model.y) (filled (rgb 255 255 255) (polygon [ (-2, 7), (-2, 14), (2, 14), (2, 7) ]))
-
-    , move (0 + model.x,  0 + model.y) (filled (rgb 0 0 255) (polygon [ (-9, 47), (-9, 81), (-2, 81), (-2, 47) ]))
-    , move (0 + model.x,  0 + model.y) (filled (rgb 0 0 255) (polygon [ (9, 47), (9, 81), (2, 81), (2, 47) ]))
-    , move (0 + model.x,  0 + model.y) (filled (rgb 0 0 255) (polygon [ (-9, 47), (-9, 53), (9, 53), (9, 47) ]))
-    
-    , move (0 + model.x,  0 + model.y) (traced   (solid black) (path [ (-16, 38),(-12, 38) ] ))
-    , move (0 + model.x,  0 + model.y) (traced (solid black) (path [ (-16, 35),(-12, 35) ] ))
-    , move (0 + model.x,  0 + model.y) (traced (solid black) (path [ (16, 38),(12, 38) ] ))
-    , move (0 + model.x,  0 + model.y) (traced (solid black) (path [ (16, 35),(12, 35) ] ))
-    , move (0 + model.x,  0 + model.y) (traced (solid black) (path [ (-1, 14),(-4, 17) ] ))
-    , move (0 + model.x,  0 + model.y) (traced (solid black) (path [ (1, 14),(4, 17) ] ))
-    , move (0 + model.x,  0 + model.y) (traced (solid black) (path [ (-4, 17),(0, 22) ] ))
-    , move (0 + model.x,  0 + model.y) (traced (solid black) (path [ (4, 17),(0, 22) ] ))
-    , move (0 + model.x,  0 + model.y) (traced (solid black) (path [ (0, 22),(0, 45) ] ))
-    
-  ])
+  let
+    baseTransform = move (model.x, model.y)
+  in
+    [ oval 4 10
+        |> filled (rgb 255 255 0)
+        |> baseTransform
+        |> move (-14, 42)
+    , oval 4 10
+        |> filled (rgb 255 255 0)
+        |> baseTransform
+        |> move (14, 42)
+    , oval 16 20
+        |> filled (rgb 255 255 0)
+        |> baseTransform
+    , oval 2 2
+        |> filled (rgb 0 0 0)
+        |> baseTransform
+        |> move (-2, -3)
+    , oval 2 2
+        |> filled (rgb 0 0 0) 
+        |> baseTransform
+        |> move (2, -3)
+    , path [ (-2, 4),(2, 4) ]
+        |> traced (solid black)
+        |> baseTransform
+    , polygon [ (-12,15), (-16,15), (-16,42), (-12,42) ]
+        |> filled (rgb 255 255 255)
+        |> baseTransform 
+    , polygon [ (12,15), (16,15), (16,42), (12,42) ]
+        |> filled (rgb 255 255 255)
+        |> baseTransform 
+    , polygon [ (-10, 14), (-10, 45), (10, 45), (10, 14) ]
+        |> filled (rgb 255 255 255)
+        |> baseTransform 
+    , polygon [ (-2, 7), (-2, 14), (2, 14), (2, 7) ]
+        |> filled (rgb 255 255 255)
+        |> baseTransform 
+    , polygon [ (-9, 47), (-9, 81), (-2, 81), (-2, 47) ]
+        |> filled (rgb 0 0 255) 
+        |> baseTransform
+    , polygon [ (9, 47), (9, 81), (2, 81), (2, 47) ]
+        |> filled (rgb 0 0 255) 
+        |> baseTransform
+    , polygon [ (-9, 47), (-9, 53), (9, 53), (9, 47) ]
+        |> filled (rgb 0 0 255) 
+        |> baseTransform
+    , path [ (-16, 38),(-12, 38) ]
+        |> traced (solid black)
+        |> baseTransform
+    , path [ (-16, 35),(-12, 35) ]
+        |> traced (solid black)    
+        |> baseTransform 
+    , path [ (16, 38),(12, 38) ]
+        |> traced (solid black)    
+        |> baseTransform 
+    , path [ (16, 35),(12, 35) ]
+        |> traced (solid black)    
+        |> baseTransform 
+    , path [ (-1, 14),(-4, 17) ]
+        |> traced (solid black)    
+        |> baseTransform 
+    , path [ (1, 14),(4, 17) ]
+        |> traced (solid black)    
+        |> baseTransform 
+    , path [ (-4, 17),(0, 22) ]
+        |> traced (solid black)    
+        |> baseTransform 
+    , path [ (4, 17),(0, 22) ]
+        |> traced (solid black)    
+        |> baseTransform 
+    , path [ (0, 22),(0, 45) ]
+        |> traced (solid black)    
+        |> baseTransform 
+    ]
+      |> group
+      |> rotate 3.14159 
