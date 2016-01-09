@@ -6,6 +6,10 @@ module HelicopterRide where
 
 import Debug exposing (log)
 
+import Random exposing (int)
+
+import Time exposing (..)
+
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (style)
@@ -14,6 +18,8 @@ import String
 import Char
 
 import Effects exposing (Effects, none)
+
+import Constants exposing (canvasWidth, canvasHeight, personPositions)
 
 import Helicopter exposing (update, view, init)
 import Person
@@ -28,20 +34,20 @@ import Keyboard
 -- Model
 
 type alias Model =
-  { helicopter: Helicopter.Model,
-    person: Person.Model,
-    time: Float
+  { helicopter: Helicopter.Model
+  , persons: List Person.Model
+  , time: Float
   }
 
-init: { x: Float, y: Float } -> Person.Model -> Float -> ( Model, Effects Action)
-init helicopterPosition personPosition time =
+init: { x: Float, y: Float } -> ( Model, Effects Action)
+init helicopterPosition =
   let 
     helicopter = Helicopter.init helicopterPosition.x helicopterPosition.y 0 2
-    person = Person.init personPosition
-    time = time
+    persons = List.map Person.init personPositions
+    time = 0
   in
     ( { helicopter = helicopter
-      , person = person
+      , persons = persons
       , time = time
       }
       , none
@@ -63,29 +69,27 @@ getAcceleration char =
   else 
     { x = 0, y = 0 }
 
-type Action = Pers Person.Action | Heli Helicopter.Action | Tick | Key Char
+type Action = PersonAction Person.Action | HelicopterAction Helicopter.Action | Step { keyDirection: { x: Int, y: Int }, delta: Time }
 
 update: Action -> Model -> ( Model, Effects Action)
 update action model =
   case action of
-    Heli act ->
+    HelicopterAction act ->
       ( { model |
           helicopter = Helicopter.update act model.helicopter
       }, none )
-    Pers act ->
+    PersonAction act ->
       ( { model |
-          person = Person.update act model.person
+          persons = List.map (Person.update act) model.persons
       }, none )
-    Tick ->
-      ({ model |
-        helicopter = Helicopter.update Helicopter.Tick model.helicopter
-      }, none)
-    Key keyChar ->
+    Step info ->
       let
-        acceleration = getAcceleration keyChar
-      in  
+        keyDirectionFloat = { x = toFloat -info.keyDirection.x, y = toFloat -info.keyDirection.y }
+        helicopterPosition = { x = model.helicopter.x, y = model.helicopter.y }
+      in
         ({ model |
-          helicopter = Helicopter.update (Helicopter.Accelerate (acceleration)) model.helicopter
+            helicopter = Helicopter.update (Helicopter.Update keyDirectionFloat) model.helicopter
+          , persons = List.map (Person.update (Person.Update helicopterPosition)) model.persons
         }, none)
 
 
@@ -107,14 +111,16 @@ headingStyle =
 
 view: Signal.Address Action -> Model -> Html
 view address model =
-  div [ containerStyle ]
-    [ h1 [ headingStyle ] [ text "Helicopter Ride" ]
-    , p [] [ text "Use w-a-s-d keys to navigate the helicopter." ]
-    , fromElement (
-        collage 640 480
-        [ (filled black) (rect 640 480)
-        , Person.view (Signal.forwardTo address Pers) model.person
-        , Helicopter.view (Signal.forwardTo address Heli) model.helicopter 
-        ]
-      )
-    ]
+  let
+    rectangle = rect canvasWidth canvasHeight |> filled black
+    helicopterView = Helicopter.view (Signal.forwardTo address HelicopterAction) model.helicopter
+    personsView = List.map (Person.view (Signal.forwardTo address PersonAction)) model.persons
+    graphicsElements = rectangle :: helicopterView :: personsView
+  in
+    div [ containerStyle ]
+      [ h1 [ headingStyle ] [ text "Helicopter Ride" ]
+      , p [] [ text "Use the w-a-s-d keys to navigate the helicopter." ]
+      , fromElement (
+          collage canvasWidth canvasHeight graphicsElements
+        )
+      ]

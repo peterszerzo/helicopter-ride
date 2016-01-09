@@ -2,6 +2,8 @@ module Helicopter where
 
 import Html exposing (..)
 
+import Constants exposing (canvasWidth, canvasHeight)
+
 import Color exposing (..)
 
 import Graphics.Collage exposing (..)
@@ -21,17 +23,26 @@ init x y vx vy =
 
 -- Update
 
-type Action = Move { x: Float, y: Float } | Tick | Accelerate { x: Float, y: Float }
+type Action = Update { x: Float, y: Float }
 
 update: Action -> Model -> Model
 update action model = 
   case action of
-    Move d ->
-      { model | x = model.x + d.x, y = model.y + d.y }
-    Accelerate d ->
-      { model | vx = model.vx + d.x, vy = model.vy + d.y }
-    Tick ->
-      { model | x = model.x + model.vx * dt, y = model.y + model.vy * dt }
+    Update d ->
+      let
+        x = model.x + model.vx * dt
+        y = model.y + model.vy * dt
+        fx = if (x < -canvasWidth/2 || x > canvasWidth/2) then -1 else 1
+        fy = if (y < -canvasHeight/2 || y > canvasHeight/2) then -1 else 1
+        vx = (model.vx + d.x) * fx
+        vy = (model.vy + d.y) * fy
+      in
+        { model | 
+            vx = vx
+          , vy = vy
+          , x = x
+          , y = y
+        }
 
 
 
@@ -41,32 +52,33 @@ view: Signal.Address Action -> Model -> Form
 view address model =
   let
     baseTransform = move (model.x, 55 + model.y)
+    orientation = if model.vx > 0 then -1 else 1
   in
-    [ path [ (-20,-20), (20,-20) ]
+    [ path [ (-20 * orientation, -20), (20 * orientation,-20) ]
         |> traced (solid white)
         |> baseTransform
-    , path [ (0,-13), (0,-20) ]
+    , path [ (0 * orientation,-13), (0 * orientation,-20) ]
         |> traced (solid white)
         |> baseTransform
-    , path [ (45,-14) ,(35,-14) ]
+    , path [ (45 * orientation, -14) ,(35 * orientation,-14) ]
         |> traced (solid white)
         |> baseTransform
-    , polygon [ (18,5), (-18,5), (-18,-13), (18,-13) ]
+    , polygon [ (18 * orientation,5), (-18 * orientation,5), (-18 * orientation,-13), (18 * orientation,-13) ]
         |> filled (rgb 0 172 167)
         |> baseTransform
-    , polygon [ (40,-5), (16,-5), (16,-3), (40,-3) ]
+    , polygon [ (40 * orientation,-5), (16 * orientation,-5), (16 * orientation,-3), (40 * orientation,-3) ]
         |> filled (rgb 255 0 0)
         |> baseTransform
-    , polygon [ (40,-5), (38,-5), (38,-14), (40,-14) ]
+    , polygon [ (40 * orientation,-5), (38 * orientation,-5), (38 * orientation,-14), (40 * orientation,-14) ]
         |> filled (rgb 255 0 0)
         |> baseTransform
     , oval 24 22
         |> filled (rgb 0 195 0)
-        |> move (-18, -2)
+        |> move (-18 * orientation, -2)
         |> baseTransform
     , oval 10 6
         |> filled (rgb 0 0 0)
-        |> move (-18, -2)
+        |> move (-18 * orientation, -2)
         |> baseTransform
     ] 
       |> group

@@ -1,4 +1,4 @@
-module Person (Model, init, Action, update, view) where
+module Person where
 
 import Html exposing (..)
 
@@ -10,23 +10,33 @@ import Graphics.Element exposing (..)
 
 -- Model
 
-type alias Model = { x: Float, y: Float }
+type alias Model = { 
+  position: { x: Float, y: Float },
+  hasHead: Bool
+}
 
 init : { x: Float, y: Float } -> Model
 init pos = 
-  { x = pos.x, y = pos.y }
+  { position = { x = pos.x, y = pos.y }
+  , hasHead = True
+  }
 
 
 
 -- Update
 
-type Action = Move (Float, Float)
+type Action = Update { x: Float, y: Float }
 
 update: Action -> Model -> Model
 update action model =
   case action of
-    Move (dx, dy) ->
-      { x = model.x + dx, y = model.y + dy }
+    Update d ->
+      let
+        hasHead = if (not model.hasHead) then False else ((abs (model.position.x - d.x) > 25) || (abs (model.position.y - d.y) > 25))
+      in
+        { model | 
+          hasHead = hasHead
+        }
 
 
 -- View
@@ -34,30 +44,34 @@ update action model =
 view: Signal.Address Action -> Model -> Form
 view address model =
   let
-    baseTransform = move (model.x, model.y)
-  in
-    [ oval 4 10
-        |> filled (rgb 255 255 0)
-        |> baseTransform
-        |> move (-14, 42)
-    , oval 4 10
-        |> filled (rgb 255 255 0)
-        |> baseTransform
-        |> move (14, 42)
-    , oval 16 20
-        |> filled (rgb 255 255 0)
-        |> baseTransform
-    , oval 2 2
-        |> filled (rgb 0 0 0)
-        |> baseTransform
-        |> move (-2, -3)
-    , oval 2 2
-        |> filled (rgb 0 0 0) 
-        |> baseTransform
-        |> move (2, -3)
-    , path [ (-2, 4),(2, 4) ]
+    baseTransform = move (model.position.x, model.position.y)
+
+    head = [
+      oval 4 10
+          |> filled (rgb 255 255 0)
+          |> baseTransform
+          |> move (-14, 42)
+      , oval 4 10
+          |> filled (rgb 255 255 0)
+          |> baseTransform
+          |> move (14, 42)
+      , oval 16 20
+          |> filled (rgb 255 255 0)
+          |> baseTransform
+      , oval 2 2
+          |> filled (rgb 0 0 0)
+          |> baseTransform
+          |> move (-2, -3)
+      , oval 2 2
+          |> filled (rgb 0 0 0) 
+          |> baseTransform
+          |> move (2, -3)
+    ]
+
+    rest = [ path [ (-2, 4),(2, 4) ]
         |> traced (solid black)
         |> baseTransform
+
     , polygon [ (-12,15), (-16,15), (-16,42), (-12,42) ]
         |> filled (rgb 255 255 255)
         |> baseTransform 
@@ -107,5 +121,10 @@ view address model =
         |> traced (solid black)    
         |> baseTransform 
     ]
+
+    all = List.concat [ head, rest ]
+
+  in
+    (if model.hasHead then all else rest)
       |> group
       |> rotate 3.14159 
