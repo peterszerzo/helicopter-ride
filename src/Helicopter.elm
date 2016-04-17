@@ -1,15 +1,12 @@
 module Helicopter where
 
 import Html exposing (..)
-
-import Constants exposing (canvasWidth, canvasHeight)
-
 import Color exposing (..)
-
 import Graphics.Collage exposing (..)
 import Graphics.Element exposing (..)
 
-dt = 0.1
+import Constants exposing (canvasWidth, canvasHeight, updateTimeStep)
+
 
 -- Model
 
@@ -30,8 +27,8 @@ update action model =
   case action of
     Update d ->
       let
-        x = model.x + model.vx * dt
-        y = model.y + model.vy * dt
+        x = model.x + model.vx * updateTimeStep
+        y = model.y + model.vy * updateTimeStep
         fx = if (x < -canvasWidth/2 || x > canvasWidth/2) then -1 else 1
         fy = if (y < -canvasHeight/2 || y > canvasHeight/2) then -1 else 1
         vx = (model.vx + d.x) * fx
@@ -51,7 +48,7 @@ update action model =
 view: Signal.Address Action -> Model -> Form
 view address model =
   let
-    baseTransform = move (model.x, 55 + model.y)
+    baseTransform = move (model.x, model.y)
     orientation = if model.vx > 0 then -1 else 1
   in
     [ path [ (-20 * orientation, -20), (20 * orientation,-20) ]

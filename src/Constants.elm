@@ -9,6 +9,9 @@ canvasHeight =
 frameRate =
   45
 
+updateTimeStep =
+  0.1
+
 personPositions = 
   [ { x = 30, y = 10 }
   , { x = 50, y = -20 } 

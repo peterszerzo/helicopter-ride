@@ -4,18 +4,11 @@
 
 module HelicopterRide where
 
-import Debug exposing (log)
-
-import Random exposing (int)
-
 import Time exposing (..)
 
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (style)
-
-import String
-import Char
 
 import Effects exposing (Effects, none)
 
@@ -41,7 +34,7 @@ type alias Model =
 
 init: { x: Float, y: Float } -> ( Model, Effects Action)
 init helicopterPosition =
-  let 
+  let
     helicopter = Helicopter.init helicopterPosition.x helicopterPosition.y 0 2
     persons = List.map Person.init personPositions
     time = 0
@@ -55,19 +48,6 @@ init helicopterPosition =
 
 
 -- Update
-
-getAcceleration: Char -> { x: Float, y: Float }
-getAcceleration char =
-  if (char == 'w') then 
-    { x = 0, y = -1 } 
-  else if (char == 's') then 
-    { x = 0, y = 1 } 
-  else if (char == 'a') then 
-    { x = 1, y = 0 } 
-  else if (char == 'd') then 
-    { x = -1, y = 0 } 
-  else 
-    { x = 0, y = 0 }
 
 type Action = PersonAction Person.Action | HelicopterAction Helicopter.Action | Step { keyDirection: { x: Int, y: Int }, delta: Time }
 
@@ -85,7 +65,12 @@ update action model =
     Step info ->
       let
         keyDirectionFloat = { x = toFloat -info.keyDirection.x, y = toFloat -info.keyDirection.y }
-        helicopterPosition = { x = model.helicopter.x, y = model.helicopter.y }
+        helicopterPosition =
+          { x = model.helicopter.x
+          , y = model.helicopter.y
+          , vx = model.helicopter.vx
+          , vy = model.helicopter.vy
+          }
       in
         ({ model |
             helicopter = Helicopter.update (Helicopter.Update keyDirectionFloat) model.helicopter
@@ -96,7 +81,7 @@ update action model =
 -- View
 
 containerStyle : Attribute
-containerStyle = 
+containerStyle =
   style
     [ ("display", "block")
     , ("margin", "30px auto auto auto")
