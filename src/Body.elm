@@ -1,7 +1,7 @@
-module Body where
+module Body exposing (..)
 
-import Graphics.Collage exposing (..)
-import Graphics.Element exposing (..)
+import Collage exposing (..)
+import Element exposing (..)
 import Color exposing (..)
 
 view model =

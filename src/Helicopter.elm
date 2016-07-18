@@ -1,52 +1,47 @@
-module Helicopter where
+module Helicopter exposing (..)
 
 import Html exposing (..)
 import Color exposing (..)
-import Graphics.Collage exposing (..)
-import Graphics.Element exposing (..)
+import Collage exposing (..)
+import Element exposing (..)
 
 import Constants exposing (canvasWidth, canvasHeight, updateTimeStep)
 
 
 -- Model
 
-type alias Model = { x: Float, y: Float, vx: Float, vy: Float }
+type alias Model =
+  { x : Float
+  , y : Float
+  , vx : Float
+  , vy : Float }
 
 init : Float -> Float -> Float -> Float -> Model
-init x y vx vy = 
-  { x = x, y = y, vx = vx, vy = vy }
+init x y vx vy =
+  Model x y vx vy
 
 
-
--- Update
-
-type Action = Update { x: Float, y: Float }
-
-update: Action -> Model -> Model
-update action model = 
-  case action of
-    Update d ->
-      let
-        x = model.x + model.vx * updateTimeStep
-        y = model.y + model.vy * updateTimeStep
-        fx = if (x < -canvasWidth/2 || x > canvasWidth/2) then -1 else 1
-        fy = if (y < -canvasHeight/2 || y > canvasHeight/2) then -1 else 1
-        vx = (model.vx + d.x) * fx
-        vy = (model.vy + d.y) * fy
-      in
-        { model | 
-            vx = vx
-          , vy = vy
-          , x = x
-          , y = y
-        }
+update dir model =
+  let
+    x = model.x + model.vx * updateTimeStep
+    y = model.y + model.vy * updateTimeStep
+    fx = if (x < -canvasWidth/2 || x > canvasWidth/2) then -1 else 1
+    fy = if (y < -canvasHeight/2 || y > canvasHeight/2) then -1 else 1
+    vx = (model.vx + (toFloat dir.x)) * fx
+    vy = (model.vy + (toFloat dir.y)) * fy
+  in
+    { model |
+        vx = vx
+      , vy = vy
+      , x = x
+      , y = y
+    }
 
 
 
 -- View
 
-view: Signal.Address Action -> Model -> Form
-view address model =
+view model =
   let
     baseTransform = move (model.x, model.y)
     orientation = if model.vx > 0 then -1 else 1
@@ -77,6 +72,6 @@ view address model =
         |> filled (rgb 0 0 0)
         |> move (-18 * orientation, -2)
         |> baseTransform
-    ] 
+    ]
       |> group
-      |> rotate 3.14159 
+      |> rotate 3.14159

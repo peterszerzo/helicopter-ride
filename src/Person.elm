@@ -1,9 +1,9 @@
-module Person where
+module Person exposing (..)
 
 import Html exposing (..)
 import Color exposing (..)
-import Graphics.Collage exposing (..)
-import Graphics.Element exposing (..)
+import Collage exposing (..)
+import Element exposing (..)
 
 import Constants exposing (updateTimeStep)
 import Head
@@ -11,16 +11,16 @@ import Body
 
 -- Model
 
-type alias Model = {
-  position: { x: Float, y: Float },
-  head:
+type alias Model =
+  { position: { x: Float, y: Float }
+  , head:
     { isLoose: Bool
     , x: Float
     , y: Float
     , vx: Float
     , vy: Float
     }
-}
+  }
 
 init : { x: Float, y: Float } -> Model
 init pos =
@@ -38,41 +38,32 @@ init pos =
   }
 
 
-
 -- Update
 
-type Action = Update { x: Float, y: Float, vx: Float, vy: Float }
-
-update: Action -> Model -> Model
-update action model =
-  case action of
-    Update d ->
-      let
-        oldHead = model.head
-        isHeadLoose = if (not oldHead.isLoose) then False else ((abs (model.position.x - d.x) > 25) || (abs (model.position.y - d.y) > 25))
-        hasHeadJustComeLoose = (not oldHead.isLoose) && (isHeadLoose)
-        vx = if (hasHeadJustComeLoose) then d.vx else oldHead.vx
-        vy = if (hasHeadJustComeLoose) then d.vy else oldHead.vy
-        x = oldHead.x + oldHead.vx * updateTimeStep
-        y = oldHead.y + oldHead.vy * updateTimeStep
-        newHead =
-          { oldHead |
-              isLoose = isHeadLoose
-            , x = x
-            , y = y
-            , vx = vx
-            , vy = vy
-          }
-      in
-        { model |
-          head = newHead
-        }
+update hel model =
+  let
+    oldHead = model.head
+    isHeadLoose = if (not oldHead.isLoose) then False else ((abs (model.position.x - hel.x) > 25) || (abs (model.position.y - hel.y) > 25))
+    hasHeadJustComeLoose = (not oldHead.isLoose) && (isHeadLoose)
+    vx = if (hasHeadJustComeLoose) then hel.vx else oldHead.vx
+    vy = if (hasHeadJustComeLoose) then hel.vy else oldHead.vy
+    x = oldHead.x + oldHead.vx * updateTimeStep
+    y = oldHead.y + oldHead.vy * updateTimeStep
+    newHead =
+      { oldHead |
+          isLoose = isHeadLoose
+        , x = x
+        , y = y
+        , vx = vx
+        , vy = vy
+      }
+  in
+    {model | head = newHead}
 
 
 -- View
 
-view: Signal.Address Action -> Model -> Form
-view address model =
+view model =
   let
     baseTransform = move (model.position.x, model.position.y)
     headTransform = move (model.head.x, model.head.y)

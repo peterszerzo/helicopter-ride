@@ -1,7 +1,7 @@
-module Head where
+module Head exposing (..)
 
-import Graphics.Collage exposing (..)
-import Graphics.Element exposing (..)
+import Collage exposing (..)
+import Element exposing (..)
 import Color exposing (..)
 
 view model =
