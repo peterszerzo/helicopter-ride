@@ -10,8 +10,9 @@ import Html.App exposing (map)
 import Collage exposing (collage, rect, filled, solid)
 import Element exposing (toHtml)
 import Keyboard
+import Markdown
 
-import Constants exposing (canvasWidth, canvasHeight, personPositions)
+import Constants exposing (canvasWidth, canvasHeight, personPositions, footerContent)
 import Styles
 
 import Helicopter.Views
@@ -90,6 +91,17 @@ subscriptions model =
 
 -- View
 
+viewTextBar =
+  div [Styles.textBar]
+  [ h1 [Styles.heading] [text "Helicopter Ride"]
+  , p [Styles.paragraph] [text "Use the w-a-s-d keys to navigate the helicopter."]
+  ]
+
+viewFooter =
+  div [Styles.footer]
+  [ Markdown.toHtml [] footerContent
+  ]
+
 view model =
   let
     rectangle = rect canvasWidth canvasHeight |> filled black
@@ -98,9 +110,7 @@ view model =
     graphicsElements = rectangle :: helicopterView :: personsView
   in
     div [Styles.container]
-      [ div [Styles.textBar]
-        [ h1 [Styles.heading] [text "Helicopter Ride"]
-        , p [Styles.paragraph] [text "Use the w-a-s-d keys to navigate the helicopter."]
-        ]
+      [ viewTextBar
       , div [Styles.canvasContainer] [toHtml (collage canvasWidth canvasHeight graphicsElements)]
+      , viewFooter
       ]

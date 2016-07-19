@@ -31,3 +31,9 @@ canvasContainer =
   , ("border-radius", "6px")
   , ("overflow", "hidden")
   ]
+
+footer =
+  style
+  [ ("margin", "40px 0")
+  , ("font-family", "Courier New, monospace")
+  ]

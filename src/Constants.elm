@@ -22,3 +22,7 @@ personPositions =
   , { x = -250, y = 140 }
   , { x = -200, y = -100 }
   ]
+
+footerContent = """
+Happily nerded out by [@pickled-plugins](https://github.com/pickled-plugins).
+"""
