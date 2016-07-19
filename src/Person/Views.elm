@@ -1,10 +1,22 @@
-module Body where
+module Person.Views exposing (..)
 
-import Graphics.Collage exposing (..)
-import Graphics.Element exposing (..)
+import Html exposing (..)
 import Color exposing (..)
+import Collage exposing (..)
+import Element exposing (..)
 
-view model =
+viewHead headModel =
+  [ oval 16 20
+      |> filled (rgb 255 255 0)
+  , oval 2 2
+      |> filled (rgb 0 0 0)
+      |> move (-2, -3)
+  , oval 2 2
+      |> filled (rgb 0 0 0)
+      |> move (2, -3)
+  ]
+
+viewBody bodyModel =
   [ path [ (-2, 4),(2, 4) ]
       |> traced (solid black)
   , oval 4 10
@@ -46,3 +58,17 @@ view model =
   , path [ (0, 22),(0, 45) ]
       |> traced (solid black)
   ]
+
+view model =
+  let
+    baseTransform = move (model.position.x, model.position.y)
+    headTransform = move (model.head.x, model.head.y)
+    headShapes = List.map baseTransform (viewHead model.head)
+    bodyShapes = List.map baseTransform (viewBody model.position)
+
+    allShapes = List.concat [ headShapes, bodyShapes ]
+
+  in
+    (if model.head.isLoose then allShapes else bodyShapes)
+      |> group
+      |> rotate 3.14159

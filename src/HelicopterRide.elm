@@ -1,111 +1,116 @@
---
--- Main application entry point
---
-
-module HelicopterRide where
+module HelicopterRide exposing (..)
 
 import Time exposing (..)
-
+import AnimationFrame exposing (diffs)
 import Html exposing (..)
+import Color exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (style)
-
-import Effects exposing (Effects, none)
-
-import Constants exposing (canvasWidth, canvasHeight, personPositions)
-
-import Helicopter exposing (update, view, init)
-import Person
-
-import Graphics.Collage exposing (collage, rect, filled, solid)
-
-import Color exposing (..)
-
+import Html.App exposing (map)
+import Collage exposing (collage, rect, filled, solid)
+import Element exposing (toHtml)
 import Keyboard
+import Markdown
+
+import Constants exposing (canvasWidth, canvasHeight, personPositions, footerContent)
+import Styles
+
+import Helicopter.Views
+import Helicopter.Update
+import Helicopter.Models
+import Person.Views
+import Person.Update
+import Person.Models
 
 
 -- Model
 
 type alias Model =
-  { helicopter: Helicopter.Model
-  , persons: List Person.Model
+  { helicopter : Helicopter.Models.Model
+  , persons : List Person.Models.Model
+  , direction : {x : Int, y : Int}
   , time: Float
   }
 
-init: { x: Float, y: Float } -> ( Model, Effects Action)
-init helicopterPosition =
+init: Float -> Float -> (Model, Cmd Msg)
+init helX helY =
   let
-    helicopter = Helicopter.init helicopterPosition.x helicopterPosition.y 0 2
-    persons = List.map Person.init personPositions
+    helicopter = Helicopter.Models.init helX helY 0 2
+    persons = List.map Person.Models.init personPositions
+    direction = {x = 0, y = 0}
     time = 0
   in
-    ( { helicopter = helicopter
+    (
+      { helicopter = helicopter
       , persons = persons
+      , direction = direction
       , time = time
       }
-      , none
+      , Cmd.none
     )
 
 
 -- Update
 
-type Action = PersonAction Person.Action | HelicopterAction Helicopter.Action | Step { keyDirection: { x: Int, y: Int }, delta: Time }
+type Msg =
+  KeyDown Int |
+  KeyUp Int |
+  Tick Time
 
-update: Action -> Model -> ( Model, Effects Action)
-update action model =
-  case action of
-    HelicopterAction act ->
-      ( { model |
-          helicopter = Helicopter.update act model.helicopter
-      }, none )
-    PersonAction act ->
-      ( { model |
-          persons = List.map (Person.update act) model.persons
-      }, none )
-    Step info ->
+update: Msg -> Model -> (Model, Cmd Msg)
+update msg model =
+  case msg of
+    KeyDown code ->
       let
-        keyDirectionFloat = { x = toFloat -info.keyDirection.x, y = toFloat -info.keyDirection.y }
-        helicopterPosition =
-          { x = model.helicopter.x
-          , y = model.helicopter.y
-          , vx = model.helicopter.vx
-          , vy = model.helicopter.vy
-          }
+        newX = if code == 68 then -1 else (if code == 65 then 1 else 0)
+        newY = if code == 87 then -1 else (if code == 83 then 1 else 0)
+        oldDirection = model.direction
+        newDirection = {oldDirection | x = newX, y = newY}
       in
-        ({ model |
-            helicopter = Helicopter.update (Helicopter.Update keyDirectionFloat) model.helicopter
-          , persons = List.map (Person.update (Person.Update helicopterPosition)) model.persons
-        }, none)
+        ({model | direction = newDirection}, Cmd.none)
+
+    KeyUp code ->
+      (model, Cmd.none)
+
+    Tick time ->
+      ({ model |
+          helicopter = Helicopter.Update.update model.direction model.helicopter
+        , persons = List.map (Person.Update.update model.helicopter) model.persons
+      }, Cmd.none)
+
+
+-- Subscriptions
+
+subscriptions model =
+  Sub.batch
+  [ Keyboard.ups KeyUp
+  , Keyboard.downs KeyDown
+  , diffs Tick
+  ]
 
 
 -- View
 
-containerStyle : Attribute
-containerStyle =
-  style
-    [ ("display", "block")
-    , ("margin", "30px auto auto auto")
-    , ("width", "640px")
-    ]
+viewTextBar =
+  div [Styles.textBar]
+  [ h1 [Styles.heading] [text "Helicopter Ride"]
+  , p [Styles.paragraph] [text "Use the w-a-s-d keys to navigate the helicopter."]
+  ]
 
-headingStyle : Attribute
-headingStyle =
-  style
-    [ ("font-family", "calibri, helvetica")
-    ]
+viewFooter =
+  div [Styles.footer]
+  [ Markdown.toHtml [] footerContent
+  ]
 
-view: Signal.Address Action -> Model -> Html
-view address model =
+view model =
   let
     rectangle = rect canvasWidth canvasHeight |> filled black
-    helicopterView = Helicopter.view (Signal.forwardTo address HelicopterAction) model.helicopter
-    personsView = List.map (Person.view (Signal.forwardTo address PersonAction)) model.persons
+    helicopterView = Helicopter.Views.view model.helicopter
+    personsView = List.map Person.Views.view model.persons
     graphicsElements = rectangle :: helicopterView :: personsView
   in
-    div [ containerStyle ]
-      [ h1 [ headingStyle ] [ text "Helicopter Ride" ]
-      , p [] [ text "Use the w-a-s-d keys to navigate the helicopter." ]
-      , fromElement (
-          collage canvasWidth canvasHeight graphicsElements
-        )
+    div [Styles.container]
+      [ viewTextBar
+      , div [Styles.canvasContainer] [toHtml (collage canvasWidth canvasHeight graphicsElements)]
+      , viewFooter
       ]

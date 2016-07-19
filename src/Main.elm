@@ -1,52 +1,14 @@
-import HelicopterRide exposing (update, view, init)
+module Main exposing (..)
 
 import Time exposing (..)
-import Keyboard
+import Html.App as App
 
-import StartApp exposing (..)
+import HelicopterRide exposing (update, view, init, subscriptions)
 
-import Effects exposing (Never)
-import Task
-
-import Char
-
-
--- Input.
-
-type alias Input = 
-  { keyDirection: { x: Int, y: Int }
-  , delta: Time
+main =
+  App.program
+  { init = init 10 10
+  , update = update
+  , view = view
+  , subscriptions = subscriptions
   }
-
-delta : Signal Time
-delta =
-  Signal.map inSeconds (fps 35)
-
-newInput : Signal Input
-newInput = 
-  Signal.sampleOn delta <|
-    Signal.map2 Input
-      Keyboard.wasd
-      delta
-
-
--- Entry point.
-
-app = 
-  StartApp.start
-    { init = init { x = 10, y = 10 }
-    , update = update
-    , view = view
-    , inputs = [ 
-      Signal.map (\info -> HelicopterRide.Step info) newInput
-      ]
-    }
-
-
-main = 
-  app.html
-
-
-port tasks : Signal (Task.Task Never ())
-port tasks =
-  app.tasks
