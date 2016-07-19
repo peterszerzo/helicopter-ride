@@ -1,6 +1,7 @@
 module HelicopterRide exposing (..)
 
 import Time exposing (..)
+import AnimationFrame exposing (diffs)
 import Html exposing (..)
 import Color exposing (..)
 import Html.Events exposing (..)
@@ -79,7 +80,7 @@ subscriptions model =
   Sub.batch
   [ Keyboard.ups KeyUp
   , Keyboard.downs KeyDown
-  , every (35 * millisecond) Tick
+  , diffs Tick
   ]
 
 
