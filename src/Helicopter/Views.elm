@@ -1,45 +1,9 @@
-module Helicopter exposing (..)
+module Helicopter.Views exposing (..)
 
 import Html exposing (..)
 import Color exposing (..)
 import Collage exposing (..)
 import Element exposing (..)
-
-import Constants exposing (canvasWidth, canvasHeight, updateTimeStep)
-
-
--- Model
-
-type alias Model =
-  { x : Float
-  , y : Float
-  , vx : Float
-  , vy : Float }
-
-init : Float -> Float -> Float -> Float -> Model
-init x y vx vy =
-  Model x y vx vy
-
-
-update dir model =
-  let
-    x = model.x + model.vx * updateTimeStep
-    y = model.y + model.vy * updateTimeStep
-    fx = if (x < -canvasWidth/2 || x > canvasWidth/2) then -1 else 1
-    fy = if (y < -canvasHeight/2 || y > canvasHeight/2) then -1 else 1
-    vx = (model.vx + (toFloat dir.x)) * fx
-    vy = (model.vy + (toFloat dir.y)) * fy
-  in
-    { model |
-        vx = vx
-      , vy = vy
-      , x = x
-      , y = y
-    }
-
-
-
--- View
 
 view model =
   let

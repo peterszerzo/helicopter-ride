@@ -10,7 +10,7 @@ frameRate =
   45
 
 updateTimeStep =
-  0.1
+  0.06
 
 personPositions =
   [ { x = 30, y = 10 }

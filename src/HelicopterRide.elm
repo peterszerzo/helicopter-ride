@@ -14,15 +14,19 @@ import Keyboard
 import Constants exposing (canvasWidth, canvasHeight, personPositions)
 import Styles
 
-import Helicopter exposing (update, view, init)
-import Person
+import Helicopter.Views
+import Helicopter.Update
+import Helicopter.Models
+import Person.Views
+import Person.Update
+import Person.Models
 
 
 -- Model
 
 type alias Model =
-  { helicopter : Helicopter.Model
-  , persons : List Person.Model
+  { helicopter : Helicopter.Models.Model
+  , persons : List Person.Models.Model
   , direction : {x : Int, y : Int}
   , time: Float
   }
@@ -30,8 +34,8 @@ type alias Model =
 init: Float -> Float -> (Model, Cmd Msg)
 init helX helY =
   let
-    helicopter = Helicopter.init helX helY 0 2
-    persons = List.map Person.init personPositions
+    helicopter = Helicopter.Models.init helX helY 0 2
+    persons = List.map Person.Models.init personPositions
     direction = {x = 0, y = 0}
     time = 0
   in
@@ -69,8 +73,8 @@ update msg model =
 
     Tick time ->
       ({ model |
-          helicopter = Helicopter.update model.direction model.helicopter
-        , persons = List.map (Person.update model.helicopter) model.persons
+          helicopter = Helicopter.Update.update model.direction model.helicopter
+        , persons = List.map (Person.Update.update model.helicopter) model.persons
       }, Cmd.none)
 
 
@@ -89,8 +93,8 @@ subscriptions model =
 view model =
   let
     rectangle = rect canvasWidth canvasHeight |> filled black
-    helicopterView = Helicopter.view model.helicopter
-    personsView = List.map Person.view model.persons
+    helicopterView = Helicopter.Views.view model.helicopter
+    personsView = List.map Person.Views.view model.persons
     graphicsElements = rectangle :: helicopterView :: personsView
   in
     div [Styles.container]
