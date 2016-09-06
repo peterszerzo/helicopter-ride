@@ -1,10 +1,12 @@
 {
   "name": "helicopter-ride",
   "version": "1.0.0",
-  "description": "## Getting Started",
+  "description": "Helicopter Ride",
   "main": "elm.js",
   "scripts": {
-    "publish": "elm-make Main.elm && node publish.js"
+    "setup": "rm -rf build && mkdir build",
+    "build": "elm-make src/Main.elm --output=build/index.html",
+    "publish": "node publish.js"
   },
   "repository": {
     "type": "git",

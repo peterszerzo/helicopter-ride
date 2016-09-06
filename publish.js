@@ -1,4 +1,15 @@
-var ghpages = require('gh-pages');
-var path = require('path');
- 
-ghpages.publish(path.join(__dirname, ''), { src: 'index.html' }, function(err) { if(err) { return console.log(err); } });
+'use strict';
+
+const ghPages = require('gh-pages');
+const path = require('path');
+
+ghPages.publish(
+  path.join(__dirname, 'build'), {
+    src: 'index.html'
+  },
+  function(err) {
+    if(err) {
+      return console.log(err);
+    }
+  }
+);
