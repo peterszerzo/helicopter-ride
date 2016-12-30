@@ -11,14 +11,12 @@ canvasHeight =
     480
 
 
-frameRate =
-    45
-
-
+updateTimeStep : Float
 updateTimeStep =
     0.06
 
 
+personPositions : List { x : Float, y : Float }
 personPositions =
     [ { x = 30, y = 10 }
     , { x = 50, y = -20 }
@@ -36,7 +34,7 @@ footerContent =
     """
 # Helicopter Ride
 
-Happily nerded out by [@peterszerzo](https://github.com/peterszerzo), unable to contain his nostalgia on how simple coding used to be in high school.
+This silly macabre game is my second ever game, originally written in Pascal around 2004 and re-created as my first ever Elm app in late 2015. Sometimes it is difficult to contain my nostalgia around how simple programming used to be in high school.
 
-Use the w-a-s-d keys to navigate the helicopter.
+Anyways, use the w-a-s-d keys to navigate the helicopter.
 """
