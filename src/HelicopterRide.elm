@@ -4,9 +4,8 @@ import Time exposing (..)
 import AnimationFrame exposing (diffs)
 import Html exposing (..)
 import Color exposing (..)
-import Html.Events exposing (..)
+import Html exposing (map)
 import Html.Attributes exposing (style)
-import Html.App exposing (map)
 import Collage exposing (collage, rect, filled, solid)
 import Element exposing (toHtml)
 import Keyboard
@@ -19,9 +18,6 @@ import Helicopter.Models
 import Person.Views
 import Person.Update
 import Person.Models
-
-
--- Model
 
 
 type alias Model =
@@ -54,10 +50,6 @@ init helX helY =
           }
         , Cmd.none
         )
-
-
-
--- Update
 
 
 type Msg
@@ -111,10 +103,7 @@ update msg model =
             )
 
 
-
--- Subscriptions
-
-
+subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
         [ Keyboard.ups KeyUp
@@ -123,27 +112,11 @@ subscriptions model =
         ]
 
 
-
--- View
-
-
-viewTextBar =
-    div [ Styles.textBar ]
-        [ h1 [ Styles.heading ] [ text "Helicopter Ride" ]
-        , p [ Styles.paragraph ] [ text "Use the w-a-s-d keys to navigate the helicopter." ]
-        ]
-
-
-viewFooter =
-    div [ Styles.footer ]
-        [ Markdown.toHtml [] footerContent
-        ]
-
-
+view : Model -> Html Msg
 view model =
     let
         rectangle =
-            rect canvasWidth canvasHeight |> filled black
+            rect (canvasWidth |> toFloat) (canvasHeight |> toFloat) |> filled black
 
         helicopterView =
             Helicopter.Views.view model.helicopter
@@ -154,8 +127,9 @@ view model =
         graphicsElements =
             rectangle :: helicopterView :: personsView
     in
-        div [ Styles.container ]
-            [ viewTextBar
-            , div [ Styles.canvasContainer ] [ toHtml (collage canvasWidth canvasHeight graphicsElements) ]
-            , viewFooter
+        div [ style Styles.container ]
+            [ div [ style Styles.static ]
+                [ Markdown.toHtml [] footerContent
+                ]
+            , div [ style Styles.canvasContainer ] [ toHtml (collage canvasWidth canvasHeight graphicsElements) ]
             ]

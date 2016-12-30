@@ -12,13 +12,13 @@ update dir model =
             model.y + model.vy * updateTimeStep
 
         fx =
-            if (x < -canvasWidth / 2 || x > canvasWidth / 2) then
+            if (x < -(canvasWidth |> toFloat) / 2 || x > (canvasWidth |> toFloat) / 2) then
                 -1
             else
                 1
 
         fy =
-            if (y < -canvasHeight / 2 || y > canvasHeight / 2) then
+            if (y < -(canvasHeight |> toFloat) / 2 || y > (canvasHeight |> toFloat) / 2) then
                 -1
             else
                 1

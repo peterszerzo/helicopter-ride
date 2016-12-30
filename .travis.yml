@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - "6.0.0"
+before_script:
+  - npm install -g elm@0.18.0
+script:
+  - chmod +x prod.sh
+  - ./prod.sh
+deploy:
+  skip_cleanup: true
+  provider: surge
+  project: ./dist/
+  domain: helicopter-ride.peterszerzo.com

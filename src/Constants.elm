@@ -1,10 +1,12 @@
 module Constants exposing (..)
 
 
+canvasWidth : Int
 canvasWidth =
     640
 
 
+canvasHeight : Int
 canvasHeight =
     480
 
@@ -29,7 +31,12 @@ personPositions =
     ]
 
 
+footerContent : String
 footerContent =
     """
-Happily nerded out by [@pickled-plugins](https://github.com/pickled-plugins).
+# Helicopter Ride
+
+Happily nerded out by [@peterszerzo](https://github.com/peterszerzo), unable to contain his nostalgia on how simple coding used to be in high school.
+
+Use the w-a-s-d keys to navigate the helicopter.
 """

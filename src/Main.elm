@@ -1,14 +1,14 @@
 module Main exposing (..)
 
-import Time exposing (..)
-import Html.App as App
+import Html
 import HelicopterRide exposing (update, view, init, subscriptions)
 
 
+main : Program Never HelicopterRide.Model HelicopterRide.Msg
 main =
-    App.program
-        { init = init 10 10
-        , update = update
-        , view = view
-        , subscriptions = subscriptions
+    Html.program
+        { init = HelicopterRide.init 10 10
+        , update = HelicopterRide.update
+        , view = HelicopterRide.view
+        , subscriptions = HelicopterRide.subscriptions
         }

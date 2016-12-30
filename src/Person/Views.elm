@@ -1,9 +1,7 @@
 module Person.Views exposing (..)
 
-import Html exposing (..)
 import Color exposing (..)
 import Collage exposing (..)
-import Element exposing (..)
 
 
 viewHead headModel =
