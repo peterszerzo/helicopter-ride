@@ -1,5 +1,3 @@
 # Helicopter Ride
 
-## Getting Started
-
-Navigate to project root and type ``elm-reactor``.
+[![Build Status](https://travis-ci.org/peterszerzo/helicopter-ride.svg?branch=master)](https://travis-ci.org/peterszerzo/helicopter-ride)
